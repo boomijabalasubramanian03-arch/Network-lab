@@ -209,7 +209,6 @@ void writebin() {
 
     if (fp == NULL) return;
 
-    // 1. Write SYN SYN SOH
     for (i = 0; i < 3; i++) {
         for (j = 0; preamble[i][j] != '\0'; j++) {
             for (b = 7; b >= 0; b--) {
@@ -218,7 +217,6 @@ void writebin() {
         }
     }
 
-    // 2. Write IP and MAC Address Header structures
     for (i = 0; i < 4; i++) {
         for (j = 0; headers[i][j] != '\0'; j++) {
             for (b = 7; b >= 0; b--) {
@@ -227,29 +225,24 @@ void writebin() {
         }
     }
 
-    // 3. Write opening framing control tag "STX"
     for (i = 0; STX[i] != '\0'; i++) {
         for (b = 7; b >= 0; b--) fputc(((STX[i] >> b) & 1) ? '1' : '0', fp);
     }
 
-    // 4. Write the stuffed payload character components
     for (i = 0; i < sLen; i++) {
         for (b = 7; b >= 0; b--) {
             fputc(((sPayload[i] >> b) & 1) ? '1' : '0', fp);
         }
     }
 
-    // 5. Write closing framing control tag "ETX"
     for (i = 0; ETX[i] != '\0'; i++) {
         for (b = 7; b >= 0; b--) fputc(((ETX[i] >> b) & 1) ? '1' : '0', fp);
     }
 
-    // 6. FIX: Write CRC Bits explicitly as individual character digits ('1' and '0') to file stream
     for (i = 0; crcBits[i] != '\0'; i++) {
         fputc(crcBits[i], fp);
     }
 
-    // 7. Write terminating protocol frame boundary tag "NUL"
     for (i = 0; NUL[i] != '\0'; i++) {
         for (b = 7; b >= 0; b--) fputc(((NUL[i] >> b) & 1) ? '1' : '0', fp);
     }

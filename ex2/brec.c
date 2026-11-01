@@ -27,7 +27,7 @@ char crcRemainder[40];
 
 int totalBytes = 0;
 int degree = 3;
-int injectedErrorPosition = -1; // Global tracker to print out the error position at last
+int injectedErrorPosition = -1;
 
 void bin8(int num) {
     int i;
@@ -107,7 +107,7 @@ void askAndInjectError(char *bitstream) {
         int idx = position - 1;
         if(idx >= 0 && idx < length) {
             bitstream[idx] = (bitstream[idx] == '0') ? '1' : '0';
-            injectedErrorPosition = position; // Cache position to present at execution conclusion
+            injectedErrorPosition = position;
             printf("--- Bit modified successfully at position %d! ---\n", position);
         } else {
             printf("Invalid position selection.\n");
@@ -255,7 +255,7 @@ void recv_and_process_crc() {
     } else {
         printf("Final Result: Remainder is Non-Zero -> **ERROR OCCURS IN BITSTREAM**\n");
         if (injectedErrorPosition != -1) {
-            // FIX: Print the exact position where the error was injected to confirm error tracking
+
             printf("  Verification Confirm: Error found at Bit Position: %d\n", injectedErrorPosition);
         }
     }

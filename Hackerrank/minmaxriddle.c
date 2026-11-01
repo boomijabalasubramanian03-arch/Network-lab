@@ -17,7 +17,7 @@ long* riddle(int arr_count, long* arr, int* result_count) {
         right[i] = n;
     }
 
-    int top = -1; 
+    int top = -1;
 
     for (int i = 0; i < n; i++) {
         while (top >= 0 && arr[stack[top]] >= arr[i]) {
@@ -26,11 +26,11 @@ long* riddle(int arr_count, long* arr, int* result_count) {
         if (top >= 0) {
             left[i] = stack[top];
         }
-        stack[++top] = i; 
+        stack[++top] = i;
     }
 
-    top = -1; 
-    
+    top = -1;
+
     for (int i = n - 1; i >= 0; i--) {
         while (top >= 0 && arr[stack[top]] >= arr[i]) {
             top--;
@@ -38,27 +38,23 @@ long* riddle(int arr_count, long* arr, int* result_count) {
         if (top >= 0) {
             right[i] = stack[top];
         }
-        stack[++top] = i; 
+        stack[++top] = i;
     }
 
-   
     for (int i = 0; i < n; i++) {
         int window_size = right[i] - left[i] - 1;
         res[window_size] = MAX(res[window_size], arr[i]);
     }
 
-   
     for (int i = n - 1; i >= 1; i--) {
         res[i] = MAX(res[i], res[i + 1]);
     }
 
-    
     long* final_res = (long*)malloc(n * sizeof(long));
     for (int i = 0; i < n; i++) {
         final_res[i] = res[i + 1];
     }
 
-   
     free(left);
     free(right);
     free(stack);
@@ -79,7 +75,6 @@ int main() {
     int result_count;
     long* result = riddle(n, arr, &result_count);
 
-    // Print the result matching the space-separated standard output format
     for (int i = 0; i < result_count; i++) {
         printf("%ld", result[i]);
         if (i < result_count - 1) {

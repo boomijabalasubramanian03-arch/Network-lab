@@ -18,7 +18,6 @@ char msg[100];
 int slen;
 int len;
 
-// Helper function to convert a character byte to a binary string representation
 void bin(char ch, char *binval)
 {
     int i;
@@ -29,7 +28,6 @@ void bin(char ch, char *binval)
     binval[8] = '\0';
 }
 
-// Network Layer Decapsulation View Controller
 void head()
 {
     int i;
@@ -57,7 +55,6 @@ void head()
     printf("\n");
 }
 
-// Fully compliant transparent data stream un-stuffer (Supports DLEDLE, DLESTX, and DLEETX)
 int unstuff()
 {
     int i = 0;
@@ -65,7 +62,7 @@ int unstuff()
 
     while (i < slen)
     {
-        // 1. Handle DLE DLE -> output literal sequence "DLE"
+
         if (i + 5 < slen &&
             strncmp(&buf[i], "DLE", 3) == 0 &&
             strncmp(&buf[i + 3], "DLE", 3) == 0)
@@ -74,7 +71,7 @@ int unstuff()
             i += 6;
             continue;
         }
-        // 2. Handle DLE STX -> output literal sequence "STX"
+
         if (i + 5 < slen &&
             strncmp(&buf[i], "DLE", 3) == 0 &&
             strncmp(&buf[i + 3], "STX", 3) == 0)
@@ -83,7 +80,7 @@ int unstuff()
             i += 6;
             continue;
         }
-        // 3. Handle DLE ETX -> output literal sequence "ETX"
+
         if (i + 5 < slen &&
             strncmp(&buf[i], "DLE", 3) == 0 &&
             strncmp(&buf[i + 3], "ETX", 3) == 0)
@@ -93,14 +90,12 @@ int unstuff()
            continue;
         }
 
-        // Pass normal payload text character elements cleanly straight out
         msg[j++] = buf[i++];
     }
     msg[j] = '\0';
     return j;
 }
 
-// Frame capture machine reading directly from file media link layer
 void recv()
 {
     FILE *fp;
@@ -170,7 +165,6 @@ void recv()
     }
     printf("  STX & ETX Markers validated successfully\n");
 
-    // FIX: Process streaming data safely one single character at a time
     i = 0;
     while (1)
     {
@@ -180,16 +174,14 @@ void recv()
         buf[i] = ch;
         i++;
 
-        // Continually cross check trailing string structure window elements
         if (i >= 3 && buf[i-3] == 'E' && buf[i-2] == 'T' && buf[i-1] == 'X')
         {
-            // Verify transparent escape constraints:
-            // Check if the ETX string sequence is backed up by an escaped "DLE" segment
+
             if (i >= 6 && buf[i-6] == 'D' && buf[i-5] == 'L' && buf[i-4] == 'E') {
-                // Stuffed text value element element -> maintain validation collection
+
                 continue;
             } else {
-                // Genuine unescaped control packet boundary hit -> truncate ETX structural tracking indicators
+
                 i -= 3;
                 break;
             }
@@ -197,7 +189,6 @@ void recv()
     }
     slen = i;
 
-    // Correctly locate and read out your validation trailing check byte following true ETX termination
     ch = fgetc(fp);
     printf("  CRC byte received: ");
     bin(ch, binval);

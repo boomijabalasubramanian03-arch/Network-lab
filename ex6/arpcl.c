@@ -13,7 +13,6 @@ int main() {
     struct sockaddr_in server_addr;
     char buffer[BUFFER_SIZE];
 
-
     if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         perror("Socket creation failed");
         exit(EXIT_FAILURE);
@@ -27,7 +26,6 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-
     if (connect(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
         perror("Connection failed");
         close(sockfd);
@@ -39,8 +37,7 @@ int main() {
         printf("\nEnter IP address to resolve (or 'exit' to quit): ");
         memset(buffer, 0, BUFFER_SIZE);
         if (fgets(buffer, BUFFER_SIZE, stdin) == NULL) break;
-        buffer[strcspn(buffer, "\n")] = '\0'; // strip newline
-
+        buffer[strcspn(buffer, "\n")] = '\0';
 
         if (send(sockfd, buffer, strlen(buffer), 0) < 0) {
             perror("Send failed");
@@ -51,7 +48,6 @@ int main() {
             printf("Ending session.\n");
             break;
         }
-
 
         memset(buffer, 0, BUFFER_SIZE);
         ssize_t bytes_received = recv(sockfd, buffer, BUFFER_SIZE - 1, 0);

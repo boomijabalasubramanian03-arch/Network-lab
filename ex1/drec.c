@@ -111,7 +111,6 @@ void recv()
 
     char *headerPointer = lengthPointer + 2;
 
-
     memcpy(hd.sip, headerPointer, 20);
     hd.sip[19] = '\0';
     headerPointer += 20;
@@ -127,7 +126,6 @@ void recv()
     memcpy(hd.dmac, headerPointer, 20);
     hd.dmac[19] = '\0';
     headerPointer += 20;
-
 
     hd.sp = 49101;
     hd.dp = 9208;

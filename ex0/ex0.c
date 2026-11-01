@@ -25,8 +25,6 @@ char filename[50];
 int pSize;
 int fSize;
 
-
-
 void bin8(int num)
 {
     int i;
@@ -85,8 +83,6 @@ void macBin(char mac[])
     }
 }
 
-
-
 void generateIP(char url[],int ip[])
 {
     int hash=0;
@@ -123,8 +119,6 @@ int generatePort()
     return rand()%50000+1024;
 }
 
-
-
 void addNetworkPair()
 {
     if(entry + 2 > MAX_NODES)
@@ -132,7 +126,6 @@ void addNetworkPair()
         printf("Error: Table array registry structure full.\n");
         return;
     }
-
 
     printf("Enter Source URL : ");
     scanf("%49s", table[entry].url);
@@ -388,8 +381,6 @@ int deletenode(char *url) {
     }
     return 0;
 }
-
-
 
 int main()
 {

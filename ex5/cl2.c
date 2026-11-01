@@ -25,10 +25,9 @@ int main(int argc, char* argv[])
     servName = argv[1];
     servPort = atoi(argv[2]);
 
-    // Get string from user
     printf("Enter string to send: ");
     fgets(string, sizeof(string), stdin);
-    string[strcspn(string, "\n")] = '\0';   // remove trailing newline
+    string[strcspn(string, "\n")] = '\0';
 
     memset(&servAddr, 0, sizeof(servAddr));
     servAddr.sin_family = AF_INET;
@@ -42,7 +41,6 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    // Send string
     len = sendto(s, string, strlen(string), 0,
                   (struct sockaddr*)&servAddr, sizeof(servAddr));
     if (len < 0)
@@ -51,7 +49,6 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    // Receive reversed string
     len = recvfrom(s, buffer, sizeof(buffer) - 1, 0, NULL, NULL);
     if (len < 0)
     {

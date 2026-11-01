@@ -4,7 +4,7 @@ int main() {
     if (scanf("%d", &t) != 1) return 0;
 
     while (t--) {
-        char s[6]; 
+        char s[6];
         char t_word[6];
         scanf("%s", s);
         scanf("%s", t_word);
@@ -15,7 +15,7 @@ int main() {
                 printf("B");
             }
         }
-        printf("\n"); 
+        printf("\n");
     }
     return 0;
 }

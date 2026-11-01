@@ -61,7 +61,6 @@ int main(void)
 
     printf("CRC server started on port %d...\n", SERVER_PORT);
 
-
         clntAddrLen = sizeof(clntAddr);
 
         len = recvfrom(s, buffer, sizeof(buffer) - 1, 0,
@@ -108,7 +107,6 @@ int main(void)
 
         sendto(s, buffer, strlen(buffer), 0,
                (struct sockaddr*)&clntAddr, clntAddrLen);
-
 
     close(s);
     return 0;

@@ -16,7 +16,6 @@ int main() {
     char buffer[BUFFER_SIZE];
     pid_t pid;
 
-
     if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         perror("Socket creation failed");
         exit(EXIT_FAILURE);
@@ -30,7 +29,6 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-
     if (connect(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
         perror("Connection failed");
         close(sockfd);
@@ -38,7 +36,6 @@ int main() {
     }
     printf("Connected to chat server at %s:%d\n", SERVER_IP, SERVER_PORT);
     printf("You can start chatting (type 'exit' to quit).\n");
-
 
     pid = fork();
 
@@ -74,7 +71,7 @@ int main() {
             fflush(stdout);
             memset(buffer, 0, BUFFER_SIZE);
             if (fgets(buffer, BUFFER_SIZE, stdin) == NULL) break;
-            buffer[strcspn(buffer, "\n")] = '\0'; // strip newline
+            buffer[strcspn(buffer, "\n")] = '\0';
 
             send(sockfd, buffer, strlen(buffer), 0);
 

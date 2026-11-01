@@ -16,7 +16,6 @@ int main() {
     char filename[256];
     char save_path[300];
 
-
     if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         perror("Socket creation failed");
         exit(EXIT_FAILURE);
@@ -30,7 +29,6 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-
     if (connect(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
         perror("Connection failed");
         close(sockfd);
@@ -38,18 +36,15 @@ int main() {
     }
     printf("Connected to file server at %s:%d\n", SERVER_IP, SERVER_PORT);
 
-
     printf("Enter filename to download: ");
     fgets(filename, sizeof(filename), stdin);
-    filename[strcspn(filename, "\n")] = '\0'; // strip newline
-
+    filename[strcspn(filename, "\n")] = '\0';
 
     if (send(sockfd, filename, strlen(filename), 0) < 0) {
         perror("Send failed");
         close(sockfd);
         exit(EXIT_FAILURE);
     }
-
 
     ssize_t bytes_received = recv(sockfd, buffer, BUFFER_SIZE, 0);
     if (bytes_received <= 0) {
@@ -65,7 +60,6 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-
     snprintf(save_path, sizeof(save_path), "received_%s", filename);
     FILE *fp = fopen(save_path, "wb");
     if (fp == NULL) {
@@ -75,7 +69,6 @@ int main() {
     }
 
     long total_received = 0;
-
 
     fwrite(buffer, 1, bytes_received, fp);
     total_received += bytes_received;

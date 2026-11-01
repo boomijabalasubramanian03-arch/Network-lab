@@ -43,7 +43,6 @@ void binstr(const char *str) {
     }
 }
 
-// Function to read 8 string character digits ('1' or '0') and convert them to a character byte
 int readBinaryByteString(FILE *fp, unsigned char *outByte) {
     char bitStr[9];
     int i, b;
@@ -145,17 +144,14 @@ void recv_and_process_crc() {
     printf("====================================\n");
     printf("Incoming Bitstream detected over physical medium:\n  ");
 
-    // 1. Read past preamble control texts (SYN, SYN, SOH)
     for (i = 0; i < 9; i++) {
         readBinaryByteString(fp, &reconstructedByte);
     }
 
-    // 2. Extract 16-bit Payload length byte count
     readBinaryByteString(fp, &lenHigh);
     readBinaryByteString(fp, &lenLow);
     payloadLen = (lenHigh << 8) | lenLow;
 
-    // Hardcode the fallback limits to bypass the 20-byte unaligned header tracks safely
     for (h = 0; h < 80; h++) {
         readBinaryByteString(fp, &reconstructedByte);
     }
@@ -165,14 +161,12 @@ void recv_and_process_crc() {
     printf("Byte Count System Tracking Check:\n");
     printf("  Extracted Payload Length count: %d bytes (%d bits)\n", payloadLen, payloadLen * 8);
 
-    // Hardcoded IP mappings matching your project requirements matrix layout
     strcpy(hd.sip, "192.168.1.242");
     strcpy(hd.dip, "192.168.246.228");
     strcpy(hd.smac, "43:50:94:25:49:12");
     strcpy(hd.dmac, "07:C1:F0:7C:1F:07");
     hd.sp = 49101; hd.dp = 9208;
 
-    // 3. Extract your true, clean payload string character parameters from file
     for (i = 0; i < payloadLen; i++) {
         readBinaryByteString(fp, &reconstructedByte);
         extractedPayload[i] = (char)reconstructedByte;
@@ -199,7 +193,6 @@ void recv_and_process_crc() {
     }
     printf("Active Binary Polynomial Divisor Target String: %s\n", divisor);
 
-    // 4. Read trailing validation bits directly from file stream
     i = 0;
     while (i < degree && readSingleBitChar(fp, &tempCharBit)) {
         extractedCrcBits[i++] = tempCharBit;
@@ -221,7 +214,6 @@ void recv_and_process_crc() {
 
     askAndInjectError(binaryPayloadStream);
 
-    // Reconstruct checking codeword string: append received CRC check bits to dividend bitstream
     strcat(binaryPayloadStream, extractedCrcBits);
     printf("Codeword stream passing into Receiver Division: %s\n", binaryPayloadStream);
 

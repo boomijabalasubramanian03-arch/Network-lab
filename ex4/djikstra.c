@@ -74,21 +74,18 @@ HeapNode extractMin(MinHeap* heap) {
 
 void addEdge(AdjNode** adj, int src, int dest, int weight)
 {
-    // Create a new adjacency node
+
     AdjNode* newNode = (AdjNode*)malloc(sizeof(AdjNode));
 
-    // Store destination vertex
     newNode->dest = dest;
 
-    // Store edge weight
     newNode->weight = weight;
-    // Insert node at beginning of adjacency list
+
     newNode->next = adj[src];
 
-    // Update head pointer
     adj[src] = newNode;
 }
-// Recursively resolves parent array links into a clean hyphenated path string
+
 void printPathSequence(int* parent, int v, int src) {
     if (v == src) {
         printf("%d", src + 1);
@@ -114,13 +111,11 @@ void printTraceRow(int iteration, int* T, int V, int* dist, int* parent, int src
     }
     printf("}");
 
-    // Manage dynamic alignment buffers based on set sizes
     int chars_printed = 0;
     for (int i = 0; i < V; i++) if (T[i]) chars_printed += 2;
     for (int i = chars_printed; i < V * 3 + 2; i++) printf(" ");
     printf("| ");
 
-    // Print labels L(v) and Paths for all nodes except the active source node
     for (int i = 0; i < V; i++) {
         if (i == src) continue;
 
@@ -156,7 +151,6 @@ void runDijkstraTrace(AdjNode** adj, int V, int src) {
     dist[src] = 0;
     decreaseKey(&heap, src, 0);
 
-    // Dynamic Header Layout matching your image's columns
     printf(" >>> DIJKSTRA EXECUTION TABLE (SOURCE NODE: %d) <<<\n", src + 1);
     printf("------------------------------------------------------------------------------------------------\n");
     printf("%-5s | %-12s | ", "Iter", "T");
@@ -222,12 +216,10 @@ int main() {
         addEdge(adj, u - 1, v - 1, w);
     }
 
-    // Loop through every single node in the graph as an independent source node
     for (int source = 0; source < V; source++) {
         runDijkstraTrace(adj, V, source);
     }
 
-    // Clear Graph memory blocks
     for (int i = 0; i < V; i++) {
         AdjNode* crawl = adj[i];
         while (crawl) {

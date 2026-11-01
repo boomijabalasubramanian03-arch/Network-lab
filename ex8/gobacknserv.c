@@ -77,13 +77,11 @@ int main() {
 
         printf("Received Frame: %d ", packet.sequence);
 
-        // Case 1 Handling: Packet missed/dropped simulation
         if (packet.test_case == 3) {
             printf("-> [Simulated Loss] Dropping Frame %d explicitly.\n\n", packet.sequence);
             continue;
         }
 
-        // Case 2 Handling: Bitwise error verification validation check
         if (!verifyCRC(packet)) {
             printf("-> [CRC Failure] Verification Mismatch! Dropping corrupted payload.\n");
             sprintf(response, "ACK %d", expected_seq - 1);

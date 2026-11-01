@@ -59,7 +59,6 @@ int map(char *su, char *du) {
     return 1;
 }
 
-// Transparent character stuffing covering STX, ETX, and DLE
 int stuff(char *src, char *dst) {
     int i = 0, j = 0;
     int sl = strlen(src);
@@ -93,7 +92,6 @@ void stream(char *src, char *bs) {
     }
 }
 
-// Updated framework exporter pinning terminal validation bits to 0
 void send() {
     FILE *fp;
     int i = 0;
@@ -113,7 +111,6 @@ void send() {
     }
     fputs("ETX", fp);
 
-    // Explicitly write a flat 0 byte as specified for zero CRC bits
     fputc('0', fp);
 
     fclose(fp);

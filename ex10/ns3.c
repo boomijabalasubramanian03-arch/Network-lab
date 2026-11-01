@@ -7,7 +7,7 @@ using namespace ns3;
 
 int main()
 {
-    // Node creation
+
     NodeContainer nodes;
     nodes.Create(2);
 
@@ -19,7 +19,6 @@ int main()
     std::cout << "Node 0 created" << std::endl;
     std::cout << "Node 1 created" << std::endl;
 
-    // Link creation
     PointToPointHelper p2p;
     p2p.SetDeviceAttribute("DataRate", StringValue("2Mbps"));
     p2p.SetChannelAttribute("Delay", StringValue("10ms"));
@@ -31,11 +30,9 @@ int main()
     std::cout << "Data Rate: 2Mbps" << std::endl;
     std::cout << "Delay: 10ms" << std::endl;
 
-    // Internet stack
     InternetStackHelper stack;
     stack.Install(nodes);
 
-    // IP address
     Ipv4AddressHelper address;
     address.SetBase("10.1.1.0", "255.255.255.0");
 
@@ -46,7 +43,6 @@ int main()
     std::cout << "Sender   : " << interfaces.GetAddress(0) << std::endl;
     std::cout << "Receiver : " << interfaces.GetAddress(1) << std::endl;
 
-    // TCP Receiver
     uint16_t port = 5000;
 
     PacketSinkHelper sink(
@@ -58,7 +54,6 @@ int main()
     sinkApp.Start(Seconds(1.0));
     sinkApp.Stop(Seconds(10.0));
 
-    // TCP Sender
     OnOffHelper source(
         "ns3::TcpSocketFactory",
         InetSocketAddress(interfaces.GetAddress(1), port));
@@ -71,7 +66,6 @@ int main()
     sourceApp.Start(Seconds(2.0));
     sourceApp.Stop(Seconds(9.0));
 
-    // Buffer information
     int bufferSize = 5;
     int buffer = 0;
 

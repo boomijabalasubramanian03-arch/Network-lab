@@ -48,7 +48,6 @@ int main() {
     }
     printf("Client connected. You can start chatting (type 'exit' to quit).\n");
 
-
     pid = fork();
 
     if (pid < 0) {
@@ -84,7 +83,7 @@ int main() {
             fflush(stdout);
             memset(buffer, 0, BUFFER_SIZE);
             if (fgets(buffer, BUFFER_SIZE, stdin) == NULL) break;
-            buffer[strcspn(buffer, "\n")] = '\0'; // strip newline
+            buffer[strcspn(buffer, "\n")] = '\0';
 
             send(new_sock, buffer, strlen(buffer), 0);
 

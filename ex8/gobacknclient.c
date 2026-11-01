@@ -12,7 +12,7 @@
 struct Packet {
     int sequence;
     int total_frames;
-    int test_case; // 0 = Normal, 3 = Missed/Drop, 4 = CRC Error
+    int test_case;
     char generator[20];
     char data[BUFFER_SIZE];
     char crc[20];
@@ -109,7 +109,6 @@ int main() {
             temp = temp->next;
         }
 
-        // Pipelined Window Block Generation loop
         while (next_to_send != NULL && sent_count < WINDOW_SIZE) {
             int choice = 0;
             printf("\n[Pipeline Prompt] Configure Transmission for Frame %d ('%s'):\n", next_to_send->packet.sequence, next_to_send->packet.data);
@@ -133,7 +132,6 @@ int main() {
             sent_count++;
         }
 
-        // Non-blocking timer check
         fd_set readfds;
         struct timeval tv = {2, 0};
         FD_ZERO(&readfds);
@@ -157,7 +155,7 @@ int main() {
                 printf("ACK matched. Sliding window boundaries forward!\n");
             }
         } else {
-            // Case 3 Timeout Event: Go back to window base pointer boundary
+
             printf("\n[Timeout] Missing expected ACK segment block. Rewinding pipeline to unacknowledged Frame %d!\n", window_start->packet.sequence);
             next_to_send = window_start;
         }

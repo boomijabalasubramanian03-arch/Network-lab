@@ -11,7 +11,7 @@
 struct Packet {
     int sequence;
     int total_frames;
-    int test_case; // 0 = Normal, 3 = Missed/Drop, 4 = CRC Error
+    int test_case;
     char generator[20];
     char data[BUFFER_SIZE];
     char crc[20];
@@ -83,7 +83,7 @@ int main() {
 
     printf("Enter total number of frames you want to send: ");
     scanf("%d", &total);
-    getchar(); // Clear newline buffer
+    getchar();
 
     struct Node* packetQueue = NULL;
 
@@ -95,9 +95,9 @@ int main() {
 
         printf("Enter string data payload for Frame %d: ", i);
         fgets(p.data, BUFFER_SIZE, stdin);
-        p.data[strcspn(p.data, "\n")] = '\0'; // Remove dangling newline
+        p.data[strcspn(p.data, "\n")] = '\0';
 
-        p.test_case = 0; // Default initialization
+        p.test_case = 0;
         strcpy(p.crc, "");
         appendNode(&packetQueue, p);
     }
@@ -113,14 +113,13 @@ int main() {
         scanf("%d", &choice);
         getchar();
 
-        // Update the packet based on runtime selection
         if (choice == 1) current->packet.test_case = 3;
         else if (choice == 2) current->packet.test_case = 4;
         else current->packet.test_case = 0;
 
         generateCRC(&(current->packet));
         if (current->packet.test_case == 4) {
-            current->packet.crc[0] = (current->packet.crc[0] == '1') ? '0' : '1'; // Corrupt a bit
+            current->packet.crc[0] = (current->packet.crc[0] == '1') ? '0' : '1';
         }
 
         if (current->packet.test_case == 3) {
@@ -133,7 +132,6 @@ int main() {
 
         send(cfd, &(current->packet), sizeof(struct Packet), 0);
 
-        // 2-Second Non-Blocking Timeout Checker (Case 3)
         fd_set readfds;
         struct timeval tv = {2, 0};
         FD_ZERO(&readfds);

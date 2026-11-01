@@ -145,7 +145,6 @@ int main()
         if (n < 0) { perror("recvfrom"); continue; }
         buf[n] = '\0';
 
-        // FIXED: The single main process now handles requests directly instead of using fork()
         if (strncmp(buf, "Request", 7) == 0)
         {
             char cn[100];
@@ -177,7 +176,7 @@ int main()
         }
         else
         {
-            // Handles the initial discover step cleanly
+
             printf("[Server] Received DHCP Discover from client: %s\n", buf);
 
             char response[BUFSZ];

@@ -77,7 +77,6 @@ int main() {
 
         printf("Received Packet: Sequence=%d, Data='%s'\n", packet.sequence, packet.data);
 
-        // Case 2 Handling: Check for CRC Data Corruption Errors
         if (!verifyCRC(packet)) {
             printf("[Receiver] -> CRC Error verified on Frame %d!\n", packet.sequence);
             sprintf(response, "NACK %d", packet.sequence);
@@ -92,7 +91,7 @@ int main() {
             send(cfd, response, strlen(response), 0);
             expected_seq++;
         } else {
-            // Case 1 Handling: Drop duplicate out-of-order frames
+
             printf("[Receiver] -> Frame out-of-order. Dropping packet.\n");
             sprintf(response, "ACK %d", expected_seq - 1);
             send(cfd, response, strlen(response), 0);

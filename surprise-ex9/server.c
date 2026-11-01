@@ -76,11 +76,6 @@ int main()
             continue;
         }
 
-        /*
-         * count includes the procedure name.
-         * ADD 10 20 -> count = 3 -> 2 arguments
-         */
-
         if (count - 1 != expected_args)
         {
             sprintf(response,

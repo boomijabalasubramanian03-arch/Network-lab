@@ -21,7 +21,6 @@ ARPEntry arp_table[TABLE_SIZE] = {
     {"192.168.1.5", "AA:BB:CC:DD:EE:05"}
 };
 
-
 char* lookup_mac(const char *ip) {
     int i;
     for (i = 0; i < TABLE_SIZE; i++) {
@@ -39,7 +38,6 @@ int main() {
     char buffer[BUFFER_SIZE];
     char reply[BUFFER_SIZE];
 
-
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
         perror("Socket creation failed");
         exit(EXIT_FAILURE);
@@ -52,13 +50,11 @@ int main() {
     server_addr.sin_port = htons(PORT);
     server_addr.sin_addr.s_addr = INADDR_ANY;
 
-
     if (bind(server_fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
         perror("Bind failed");
         close(server_fd);
         exit(EXIT_FAILURE);
     }
-
 
     if (listen(server_fd, 3) < 0) {
         perror("Listen failed");
@@ -67,14 +63,12 @@ int main() {
     }
     printf("ARP server listening on port %d...\n", PORT);
 
-
     while (1) {
         if ((new_sock = accept(server_fd, (struct sockaddr*)&client_addr, &addr_len)) < 0) {
             perror("Accept failed");
             continue;
         }
         printf("Client connected.\n");
-
 
         while (1) {
             memset(buffer, 0, BUFFER_SIZE);

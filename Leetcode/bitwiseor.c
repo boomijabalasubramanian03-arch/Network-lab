@@ -11,23 +11,23 @@ int subarrayBitwiseORs(int* arr, int arrSize) {
 
     for (int i = 0; i < arrSize; i++) {
         int x = arr[i];
-        
+
         int* next = (int*)malloc(32 * sizeof(int));
         int next_size = 0;
-        
+
         next[next_size++] = x;
-        
+
         for (int j = 0; j < cur_size; j++) {
             int newVal = current[j] | x;
             if (newVal != next[next_size - 1]) {
                 next[next_size++] = newVal;
             }
         }
-        
+
         free(current);
         current = next;
         cur_size = next_size;
-        
+
         for (int j = 0; j < cur_size; j++) {
             results[res_size++] = current[j];
         }
@@ -40,7 +40,6 @@ int subarrayBitwiseORs(int* arr, int arrSize) {
         return 0;
     }
 
-    // Sort results to count distinct values
     int compare(const void* a, const void* b) {
         return (*(int*)a - *(int*)b);
     }

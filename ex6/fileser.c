@@ -14,7 +14,6 @@ int main() {
     socklen_t addr_len = sizeof(client_addr);
     char buffer[BUFFER_SIZE];
 
-
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
         perror("Socket creation failed");
         exit(EXIT_FAILURE);
@@ -27,13 +26,11 @@ int main() {
     server_addr.sin_port = htons(PORT);
     server_addr.sin_addr.s_addr = INADDR_ANY;
 
-
     if (bind(server_fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
         perror("Bind failed");
         close(server_fd);
         exit(EXIT_FAILURE);
     }
-
 
     if (listen(server_fd, 3) < 0) {
         perror("Listen failed");
@@ -42,14 +39,12 @@ int main() {
     }
     printf("File server listening on port %d...\n", PORT);
 
-
     while (1) {
         if ((new_sock = accept(server_fd, (struct sockaddr*)&client_addr, &addr_len)) < 0) {
             perror("Accept failed");
             continue;
         }
         printf("Client connected.\n");
-
 
         memset(buffer, 0, BUFFER_SIZE);
         ssize_t bytes_received = recv(new_sock, buffer, BUFFER_SIZE - 1, 0);
@@ -68,7 +63,6 @@ int main() {
             close(new_sock);
             continue;
         }
-
 
         size_t bytes_read;
         long total_sent = 0;
